@@ -2,8 +2,6 @@ package com.example.tain.panificadora;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,9 +19,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
 
-    private TextView txtCodigo,txtNomeProduto,txtPrecoCusto,txtPrecoVenda,txtObs;
+    private TextView txtCodigo, txtNome,txtPrecoCusto,txtPrecoVenda,txtObs;
     private EditText edtCodigo,edtNomeProduto,edtPrecoCusto,edtPrecoVenda,edtObs;
-    private Button btnCancelar, btnSalvar, btnNovo;
+    private Button btnExcluir, btnSalvar, btnNovo;
     private Spinner spnMarca,spnEmbalagem;
     private Produto produto;
     private ProdutoAdapter adapter;
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         spnEmbalagem = (Spinner)findViewById(R.id.spnEmbalagem);
         spnMarca = (Spinner)findViewById(R.id.spnMarca);
         txtCodigo = (TextView)findViewById(R.id.txtCodigo);
-        txtNomeProduto = (TextView)findViewById(R.id.txtNomeProduto);
+        txtNome = (TextView)findViewById(R.id.txtNomeProduto);
         txtPrecoCusto = (TextView)findViewById(R.id.txtPrecoCusto);
         txtPrecoVenda = (TextView)findViewById(R.id.txtPrecoVenda);
         txtObs = (TextView)findViewById(R.id.txtObs);
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         edtPrecoVenda = (EditText)findViewById(R.id.edtPrecoVenda);
         edtObs = (EditText)findViewById(R.id.edtObs);
         btnNovo = (Button) findViewById(R.id.btnNovo);
-        btnCancelar = (Button) findViewById(R.id.btnCancelar);
+        btnExcluir = (Button) findViewById(R.id.btnExcluir);
         btnSalvar = (Button)findViewById(R.id.btnSalvar);
         listView = (ListView)findViewById(R.id.listView);
 
@@ -90,15 +88,17 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
+        btnExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelar(v);
+                excluir(v);
+                Limpar();
             }
         });
         btnSalvar.setOnClickListener(new View.OnClickListener(){
             public void onClick(View vi){
                 salvar();
+                Limpar();
             }
         });
 
@@ -106,22 +106,23 @@ public class MainActivity extends AppCompatActivity {
         btnNovo.setOnClickListener(new View.OnClickListener(){
             public void onClick(View vi){
                 produto = null;
+                Limpar();
             }
         });
 
         List<String> Embalagens = new ArrayList<>();
         Embalagens.add("Embalagem 1");
         Embalagens.add("Embalagem 2");
-        ArrayAdapter adapterEmbalagens = new ArrayAdapter(this,
+        ArrayAdapter adapterEmb = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1,Embalagens.toArray());
-        spnEmbalagem.setAdapter(adapterEmbalagens);
+        spnEmbalagem.setAdapter(adapterEmb);
 
-        List<String> Marcas = new ArrayList<>();
-        Marcas.add("Marca 1");
-        Marcas.add("Marca 2");
-        ArrayAdapter adapterMarcas = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1,Marcas.toArray());
-        spnMarca.setAdapter(adapterMarcas);
+        List<String> marcas = new ArrayList<>();
+        marcas.add("Marca 1");
+        marcas.add("Marca 2");
+        ArrayAdapter adaptermarc = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1,marcas.toArray());
+        spnMarca.setAdapter(adaptermarc);
     }
 
     @Override
@@ -129,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public void cancelar(View view){
-        finish();
+    public void excluir(View view){
+           adapter.remover(produto);
     }
 
     public void salvar(){
@@ -202,9 +203,9 @@ public class MainActivity extends AppCompatActivity {
         SpinnerAdapter adapterEmbalagem = spnEmbalagem.getAdapter();
         int qtdEmbalagem = adapterEmbalagem.getCount();
         String embalagem = state.getString("embalagem");
-        for (int w = 0; w < qtdEmbalagem;w++){
-            if (adapter.getItem(w).equals(embalagem)){
-                spnEmbalagem.setSelection(w);
+        for (int k = 0; k < qtdEmbalagem;k++){
+            if (adapter.getItem(k).equals(embalagem)){
+                spnEmbalagem.setSelection(k);
             }
         }
         SpinnerAdapter adapterMarca = spnMarca.getAdapter();
@@ -222,6 +223,16 @@ public class MainActivity extends AppCompatActivity {
         edtPrecoVenda.setText(state.getString("precovenda"));
         edtObs.setText(state.getString("obs"));
 
+    }
+
+    public void Limpar(){
+        edtCodigo.setText("");
+        edtNomeProduto.setText("");
+        edtPrecoCusto.setText("");
+        edtPrecoVenda.setText("");
+        edtObs.setText("");
+        spnEmbalagem.setSelection(0);
+        spnMarca.setSelection(0);
     }
 
 }
