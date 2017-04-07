@@ -1,4 +1,4 @@
-package com.example.tain.panificadora;
+package com.example.Alessandro.panificadora;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

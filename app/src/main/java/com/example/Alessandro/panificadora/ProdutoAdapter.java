@@ -1,4 +1,4 @@
-package com.example.tain.panificadora;
+package com.example.Alessandro.panificadora;
 
 import android.content.Context;
 import android.view.ContextMenu;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Tainã on 25/03/2017.
+ * Created by Alessandro on 04/04/2017.
  */
 
 public class ProdutoAdapter extends BaseAdapter {
